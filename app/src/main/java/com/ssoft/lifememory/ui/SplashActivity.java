@@ -13,8 +13,13 @@ import com.ssoft.lifememory.base.BaseActivity;
 
 public class SplashActivity extends BaseActivity {
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
+    }
+
+    @Override
+    public int requestLayout() {
+        return 0;
     }
 }

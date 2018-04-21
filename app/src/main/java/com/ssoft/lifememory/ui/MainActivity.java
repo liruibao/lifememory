@@ -1,20 +1,18 @@
 package com.ssoft.lifememory.ui;
 
-import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.widget.Toast;
 
 import com.ssoft.lifememory.R;
 import com.ssoft.lifememory.adapter.MainPageAdapter;
-import com.ssoft.lifememory.event.EventHelper;
 import com.ssoft.lifememory.base.BaseActivity;
 import com.ssoft.lifememory.base.BaseFragment;
+import com.ssoft.lifememory.event.EventHelper;
 import com.ssoft.lifememory.modules.drink.DrinkFragment;
 import com.ssoft.lifememory.modules.food.FoodFragment;
 import com.ssoft.lifememory.modules.mine.MineFragment;
 import com.ssoft.lifememory.modules.travel.TravelFragment;
-import com.ssoft.lifememory.service.daemon.DaemonWrapper;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -38,24 +36,30 @@ public class MainActivity extends BaseActivity {
             R.mipmap.ic_launcher,
             R.mipmap.ic_launcher};
 
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//        initView();
+//
+////        // 保活
+////        DaemonWrapper.bindActivity(this,0);
+////        EventHelper.register(this);
+////        EventHelper.post(new EventHelper.Test2Event());
+////
+////        MyApplication.getRefWatcher().watch(this);
+//
+//
+//
+//    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initView();
-
-        // 保活
-        DaemonWrapper.bindActivity(this,0);
-        EventHelper.register(this);
-        EventHelper.post(new EventHelper.Test2Event());
-
-        MyApplication.getRefWatcher().watch(this);
-
-
-
+    public int requestLayout() {
+        return R.layout.activity_main;
     }
 
-    private void initView() {
+    @Override
+    public void initView() {
         mViewPager = (ViewPager) findViewById(R.id.vp_content);
         mTabLayout = (TabLayout) findViewById(R.id.tl_menu);
         initFragments();

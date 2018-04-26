@@ -30,6 +30,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         init();
         initTheme();
+
         setContentView(requestLayout());
         ButterKnife.bind(this);
         initInjector();
@@ -39,6 +40,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initDamonService();
 
     }
+
 
     @Override
     protected void onDestroy() {
@@ -65,20 +67,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-
-
-
-
     /**
      * 设置布局前的初始化
      */
-    public void  init(){}
+    public void init() {
+    }
+
     /**
      * 初始化主题
      */
-    public void initTheme(){}
+    public void initTheme() {
+    }
+
     /**
      * 布局
+     *
      * @return
      */
     public abstract int requestLayout();
@@ -86,30 +89,34 @@ public abstract class BaseActivity extends AppCompatActivity {
     /**
      * View需要初始化的
      */
-    public  void initView(){}
+    public void initView() {
+    }
 
     /**
      * 初始化注入
      */
-    public void initInjector(){}
+    public void initInjector() {
+    }
 
     /**
      * 初始化监听器
      */
-    public void initListener(){}
+    public void initListener() {
+    }
 
     /**
      * 初始化数据
      */
-    public void initData(){}
+    public void initData() {
+    }
 
     /**
      * 初始化保活
      */
-    public void  initDamonService() {
-                // 保活
-        if(!mIsDamonStart){
-            DaemonWrapper.bindActivity(this,0);
+    public void initDamonService() {
+        // 保活
+        if (!mIsDamonStart) {
+            DaemonWrapper.bindActivity(getApplicationContext(), 0);
             EventHelper.register(this);
             EventHelper.post(new EventHelper.Test2Event());
             MyApplication.getRefWatcher().watch(this);

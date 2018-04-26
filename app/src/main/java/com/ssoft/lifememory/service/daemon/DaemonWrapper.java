@@ -1,6 +1,6 @@
 package com.ssoft.lifememory.service.daemon;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 /**
@@ -8,7 +8,7 @@ import android.content.Intent;
  */
 
 public class DaemonWrapper {
-    private static Activity mActivity = null;
+    private static Context mContext= null;
     private static int LEVEL = 0;
     private static final int WHITE_LEVEL = 1;
     private static final int GRAY_LEVEL = 2;
@@ -20,45 +20,45 @@ public class DaemonWrapper {
     private DaemonWrapper(){
 
     }
-    public static void bindActivity(Activity activity){
-        bindActivity(activity,0);
+    public static void bindActivity(Context context){
+        bindActivity(context,0);
     }
-    public static void bindActivity(Activity activity,int level){
-        mActivity = activity;
+    public static void bindActivity(Context context,int level){
+        mContext = context;
         LEVEL = level;
         startService();
     }
 
     private static void startService() {
-        if (mActivity != null){
+        if (mContext != null){
             switch (LEVEL){
                 case 0:
-                    Intent whiteIntent0 = new Intent(mActivity.getApplicationContext(), WhiteService.class);
-                    mActivity.startService(whiteIntent0);
-                    Intent grayIntent0 = new Intent(mActivity.getApplicationContext(), GrayService.class);
-                    mActivity.startService(grayIntent0);
+                    Intent whiteIntent0 = new Intent(mContext, WhiteService.class);
+                    mContext.startService(whiteIntent0);
+                    Intent grayIntent0 = new Intent(mContext, GrayService.class);
+                    mContext.startService(grayIntent0);
                     Intent blackIntent0 = new Intent();
                     blackIntent0.setAction(BLACK_WAKE_ACTION);
-                    mActivity.sendBroadcast(blackIntent0);
-                    Intent bgIntent0 = new Intent(mActivity.getApplicationContext(), BackgroundService.class);
-                    mActivity.startService(bgIntent0);
+                    mContext.sendBroadcast(blackIntent0);
+                    Intent bgIntent0 = new Intent(mContext, BackgroundService.class);
+                    mContext.startService(bgIntent0);
                     break;
                 case 1:
-                    Intent whiteIntent = new Intent(mActivity.getApplicationContext(), WhiteService.class);
-                    mActivity.startService(whiteIntent);
+                    Intent whiteIntent = new Intent(mContext, WhiteService.class);
+                    mContext.startService(whiteIntent);
                     break;
                 case 2:
-                    Intent grayIntent = new Intent(mActivity.getApplicationContext(), GrayService.class);
-                    mActivity.startService(grayIntent);
+                    Intent grayIntent = new Intent(mContext, GrayService.class);
+                    mContext.startService(grayIntent);
                     break;
                 case 3:
                     Intent blackIntent = new Intent();
                     blackIntent.setAction(BLACK_WAKE_ACTION);
-                    mActivity.sendBroadcast(blackIntent);
+                    mContext.sendBroadcast(blackIntent);
                     break;
                 case 4:
-                    Intent bgIntent = new Intent(mActivity.getApplicationContext(), BackgroundService.class);
-                    mActivity.startService(bgIntent);
+                    Intent bgIntent = new Intent(mContext, BackgroundService.class);
+                    mContext.startService(bgIntent);
                     break;
 
             }

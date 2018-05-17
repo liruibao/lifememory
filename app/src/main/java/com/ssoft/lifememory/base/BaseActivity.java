@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import com.ssoft.lifememory.event.EventHelper;
 import com.ssoft.lifememory.service.daemon.DaemonWrapper;
 import com.ssoft.lifememory.ui.MyApplication;
 import com.umeng.analytics.MobclickAgent;
@@ -27,7 +26,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContext = this;
-
         init();
         initTheme();
 
@@ -39,6 +37,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         initData();
         initDamonService();
 
+        //内存泄漏
+        MyApplication.getRefWatcher().watch(this);
     }
 
 
@@ -117,9 +117,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         // 保活
         if (!mIsDamonStart) {
             DaemonWrapper.bindActivity(getApplicationContext(), 0);
-            EventHelper.register(this);
-            EventHelper.post(new EventHelper.Test2Event());
-            MyApplication.getRefWatcher().watch(this);
+
             mIsDamonStart = true;
         }
 

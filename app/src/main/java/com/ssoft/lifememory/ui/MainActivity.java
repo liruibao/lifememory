@@ -2,27 +2,20 @@ package com.ssoft.lifememory.ui;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.widget.Toast;
 
 import com.ssoft.lifememory.Interface.ISplash;
 import com.ssoft.lifememory.R;
 import com.ssoft.lifememory.adapter.MainPageAdapter;
 import com.ssoft.lifememory.base.BaseActivity;
 import com.ssoft.lifememory.base.BaseFragment;
-import com.ssoft.lifememory.event.EventHelper;
 import com.ssoft.lifememory.modules.drink.DrinkFragment;
 import com.ssoft.lifememory.modules.food.FoodFragment;
 import com.ssoft.lifememory.modules.mine.MineFragment;
 import com.ssoft.lifememory.modules.travel.TravelFragment;
 import com.ssoft.lifememory.utils.SplashUtils;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import es.dmoral.toasty.Toasty;
 
 /**
  * Created by silentlrb on 2017/8/2.
@@ -32,15 +25,14 @@ import es.dmoral.toasty.Toasty;
 public class MainActivity extends BaseActivity {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private MainPageAdapter mPageAdapter;
     private List<BaseFragment> mFragments = new ArrayList<>();  //主界面显示的fragment
-    private int[] mIcon = new int[]{R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher,
-            R.mipmap.ic_launcher};
+
 
 
     @Override
     public int requestLayout() {
+
         return R.layout.activity_main;
     }
 
@@ -51,22 +43,24 @@ public class MainActivity extends BaseActivity {
             public int requestLayout() {
                 return R.layout.layout_splash;
             }
-        });
+        },3000);
         mViewPager = (ViewPager) findViewById(R.id.vp_content);
         mTabLayout = (TabLayout) findViewById(R.id.tl_menu);
         initFragments();
 
-        mViewPager.setAdapter(new MainPageAdapter(getSupportFragmentManager(),mFragments,this));
+        mPageAdapter = new MainPageAdapter(getSupportFragmentManager(),mFragments,this);
+        mViewPager.setAdapter(mPageAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
         initIcon();
+
     }
 
     /**
      * 初始化底部菜单的icon
      */
     private void initIcon() {
-        for (int i = 0;i< mTabLayout.getTabCount() && i<mIcon.length;i++){
-            mTabLayout.getTabAt(i).setIcon(mIcon[i]);
+        for (int i = 0;i< mTabLayout.getTabCount() && i<mFragments.size();i++){
+            mTabLayout.getTabAt(i).setCustomView(mPageAdapter.getTabView(i));
         }
     }
 
@@ -79,17 +73,5 @@ public class MainActivity extends BaseActivity {
         mFragments.add(new TravelFragment());
         mFragments.add(new MineFragment());
     }
-
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(EventHelper.TestEvent event) {
-        Toasty.success(this, "Success!", Toast.LENGTH_SHORT, true).show();
-        /* Do something */
-    };
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(EventHelper.Test2Event event) {
-        Toasty.info(this, "Here is some info for you.", Toast.LENGTH_SHORT, true).show();
-        /* Do something */
-    };
 
 }

@@ -10,6 +10,10 @@ import android.widget.FrameLayout;
 
 import com.ssoft.lifememory.Interface.ISplash;
 
+/**
+ *用户添加splash页面的工具类，实现了在activity之上添加一个splash类
+ * 并且不影响activity的数据加载抽象成接口的方式实现
+ */
 public class SplashUtils {
     private static View splashView;
     private static FrameLayout rootView;
@@ -17,16 +21,23 @@ public class SplashUtils {
         @Override
         public void handleMessage(Message msg) {
             rootView.removeView(splashView);
+            rootView = null;
+            splashView = null;
             super.handleMessage(msg);
         }
     };
 
-    public static void init(Activity activity, ISplash iSplash) {
+    /**
+     * 在activity中获取layout 的id 然后显示出来
+     * @param activity
+     * @param iSplash
+     */
+    public static void init(Activity activity, ISplash iSplash, int duration) {
         int layoutId = iSplash.requestLayout();
         if (layoutId == 0) {
             return;
         }
-        rootView = (FrameLayout) activity.getWindow().getDecorView();
+        rootView = (FrameLayout) activity.getWindow().getDecorView().findViewById(android.R.id.content);
         splashView = LayoutInflater.from(activity).inflate(layoutId, null, false);
         FrameLayout.LayoutParams p = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
@@ -38,6 +49,6 @@ public class SplashUtils {
                 return true;
             }
         });
-        handler.sendEmptyMessageDelayed(0,3000);
+        handler.sendEmptyMessageDelayed(0,duration);
     }
 }
